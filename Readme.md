@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Дмитрий Кабанов](https://up.htmlacademy.ru/javascript/8/user/128489).
-* Наставник: `Неизвестно`.
+* Наставник: [Татьяна Коростелева](https://htmlacademy.ru/profile/korosteleva).
 
 ---
 
