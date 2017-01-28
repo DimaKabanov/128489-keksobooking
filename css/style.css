@@ -501,15 +501,9 @@ select option:hover {
     top: 70px;
     left: 20px;
 
-    display: none;
     width: 230px;
     height: 510px;
 }
-
-.dialog--show {
-  display: block;
-}
-
 .dialog__title {
     position: relative;
 }

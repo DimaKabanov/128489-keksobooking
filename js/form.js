@@ -2,37 +2,54 @@
 
 // card ads //
 
+var ACTIVE_PIN = 'pin--active';
+var SHOW_DIALOG = 'dialog--show';
+var ROUNDED = 'rounded';
+
 var pins = document.querySelectorAll('.pin');
 var dialog = document.querySelector('.dialog');
 var dialogClose = dialog.querySelector('.dialog__close');
+
+// notice form elements
+var form = document.querySelector('.notice__form');
+
+var title = form.querySelector('#title');
+var price = form.querySelector('#price');
+var address = form.querySelector('#address');
+var time = form.querySelector('#time');
+var timeout = form.querySelector('#timeout');
+var typeHousing = form.querySelector('#type');
+var priceNight = form.querySelector('#price');
+var roomNumber = form.querySelector('#room_number');
+var capacity = form.querySelector('#capacity');
 
 var openDialog = function (e) {
   var target = e.target;
 
   removeActivePin();
 
-  if (target.classList.contains('rounded')) {
-    target.parentNode.classList.add('pin--active');
+  if (target.classList.contains(ROUNDED)) {
+    target.parentNode.classList.add(ACTIVE_PIN);
   } else {
-    target.classList.add('pin--active');
+    target.classList.add(ACTIVE_PIN);
   }
 
-  dialog.classList.add('dialog--show');
+  dialog.classList.add(SHOW_DIALOG);
 };
 
 var closeDialog = function () {
-  dialog.classList.remove('dialog--show');
+  dialog.classList.remove(SHOW_DIALOG);
   removeActivePin();
 };
 
 var removeActivePin = function () {
-  var activePin = document.querySelector('.pin--active');
+  var activePin = document.querySelector('.' + ACTIVE_PIN);
 
   if (!activePin) {
     return;
   }
 
-  activePin.classList.remove('pin--active');
+  activePin.classList.remove(ACTIVE_PIN);
 };
 
 dialogClose.addEventListener('click', closeDialog);
@@ -42,10 +59,6 @@ for (var i = 0; i < pins.length; i++) {
 }
 
 // form validation //
-
-var title = document.getElementById('title');
-var price = document.getElementById('price');
-var address = document.getElementById('address');
 
 title.required = true;
 title.minLength = 30;
@@ -58,13 +71,6 @@ price.max = 1000000;
 address.required = true;
 
 // correction fields //
-
-var time = document.getElementById('time');
-var timeout = document.getElementById('timeout');
-var typeHousing = document.getElementById('type');
-var priceNight = document.getElementById('price');
-var roomNumber = document.getElementById('room_number');
-var capacity = document.getElementById('capacity');
 
 // change time
 
@@ -103,25 +109,13 @@ typeHousing.addEventListener('change', function () {
 // change rooms
 
 var changeCapacity = function (roomNumberValue) {
-  var valueCapacity;
-
-  if (roomNumberValue === '2' || roomNumberValue === '100') {
-    valueCapacity = '3';
-  } else {
-    valueCapacity = '0';
-  }
+  var valueCapacity = roomNumberValue === '2' || '100' ? '3' : '0';
 
   capacity.querySelector('[value="' + valueCapacity + '"]').selected = true;
 };
 
 var changeRoom = function (capacityValue) {
-  var valueRoom;
-
-  if (capacityValue === '0') {
-    valueRoom = '1';
-  } else {
-    valueRoom = '2';
-  }
+  var valueRoom = capacityValue === '0' ? '1' : '2';
 
   roomNumber.querySelector('[value="' + valueRoom + '"]').selected = true;
 };
