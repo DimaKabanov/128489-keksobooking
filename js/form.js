@@ -109,13 +109,14 @@ typeHousing.addEventListener('change', function () {
 // change rooms
 
 var changeCapacity = function (roomNumberValue) {
-  var valueCapacity = roomNumberValue === '2' || '100' ? '3' : '0';
+  var number = +roomNumberValue;
+  var valueCapacity = number === 2 || number === 100 ? 3 : 0;
 
   capacity.querySelector('[value="' + valueCapacity + '"]').selected = true;
 };
 
 var changeRoom = function (capacityValue) {
-  var valueRoom = capacityValue === '0' ? '1' : '2';
+  var valueRoom = +capacityValue === 0 ? 1 : 2;
 
   roomNumber.querySelector('[value="' + valueRoom + '"]').selected = true;
 };
