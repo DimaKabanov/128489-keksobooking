@@ -2,13 +2,14 @@
 
 // card ads //
 
+var PIN = 'pin'
 var ACTIVE_PIN = 'pin--active';
 var SHOW_DIALOG = 'dialog--show';
 var ROUNDED = 'rounded';
 var KEY_CODE_ENTER = 13;
 var KEY_CODE_ESCAPE = 27;
 
-var pinMap = document.querySelector('.tokyo__pin-map');
+var tokyoMap = document.querySelector('.tokyo');
 var dialog = document.querySelector('.dialog');
 var dialogClose = dialog.querySelector('.dialog__close');
 
@@ -35,22 +36,28 @@ var handlerKeydownEvent = function (e) {
   }
 };
 
+var hasClassPin = function (target) {
+  return target.classList.contains(ROUNDED) || target.classList.contains(PIN);
+};
+
 var openDialog = function (e) {
   var target = e.target;
 
-  removeActivePin();
+  if (hasClassPin(target)) {
+    removeActivePin();
 
-  if (target.classList.contains(ROUNDED)) {
-    target.parentNode.classList.add(ACTIVE_PIN);
-    target.setAttribute('aria-pressed', 'true');
-  } else {
-    target.classList.add(ACTIVE_PIN);
-    target.firstElementChild.setAttribute('aria-pressed', 'true');
+    if (target.classList.contains(ROUNDED)) {
+      target.parentNode.classList.add(ACTIVE_PIN);
+      target.setAttribute('aria-pressed', 'true');
+    } else {
+      target.classList.add(ACTIVE_PIN);
+      target.firstElementChild.setAttribute('aria-pressed', 'true');
+    }
+
+    dialog.classList.add(SHOW_DIALOG);
+    dialog.setAttribute('aria-hidden', 'false');
+    document.addEventListener('keydown', handlerKeydownEvent);
   }
-
-  dialog.classList.add(SHOW_DIALOG);
-  dialog.setAttribute('aria-hidden', 'false');
-  document.addEventListener('keydown', handlerKeydownEvent);
 };
 
 var closeDialog = function () {
@@ -73,9 +80,9 @@ var removeActivePin = function () {
 
 dialogClose.addEventListener('click', closeDialog);
 
-pinMap.addEventListener('click', openDialog);
+tokyoMap.addEventListener('click', openDialog);
 
-pinMap.addEventListener('keydown', function (e) {
+tokyoMap.addEventListener('keydown', function (e) {
   if (isActiveEvent(e)) {
     openDialog(e);
   }
