@@ -2,7 +2,7 @@
 
 // card ads //
 
-var PIN = 'pin'
+var PIN = 'pin';
 var ACTIVE_PIN = 'pin--active';
 var SHOW_DIALOG = 'dialog--show';
 var ROUNDED = 'rounded';
@@ -25,6 +25,13 @@ var typeHousing = form.querySelector('#type');
 var priceNight = form.querySelector('#price');
 var roomNumber = form.querySelector('#room_number');
 var capacity = form.querySelector('#capacity');
+
+var checkInTime = [12, 13, 14];
+var checkOutTime = [12, 13, 14];
+var typeHousingValue = ['apartment', 'shack', 'palace'];
+var priceNightValue = [0, 1000, 10000];
+var roomNumberValue = [1, 2, 100];
+var capacityValue = [0, 3, 3];
 
 var isActiveEvent = function (e) {
   return e.keyCode && e.keyCode === KEY_CODE_ENTER;
@@ -88,7 +95,6 @@ tokyoMap.addEventListener('keydown', function (e) {
   }
 });
 
-
 // form validation //
 
 title.required = true;
@@ -96,66 +102,29 @@ title.minLength = 30;
 title.maxLength = 100;
 
 price.required = true;
-price.min = 1000;
+price.min = 0;
 price.max = 1000000;
 
 address.required = true;
 
 // correction fields //
 
-// change time
-
-var changeTime = function (selectIdOne, selectIdTwo) {
-  selectIdOne.querySelector('[value="' + selectIdTwo.value + '"]').selected = true;
-};
-
 time.addEventListener('change', function () {
-  changeTime(timeout, time);
+  window.synchronizeFields(time, timeout, checkInTime, checkOutTime, 'value');
 });
 
 timeout.addEventListener('change', function () {
-  changeTime(time, timeout);
+  window.synchronizeFields(timeout, time, checkOutTime, checkInTime, 'value');
 });
-
-// change price
-
-var changePrice = function (typeHousingValue) {
-  switch (typeHousingValue) {
-    case 'shack':
-      priceNight.min = 0;
-      break;
-    case 'apartment':
-      priceNight.min = 1000;
-      break;
-    case 'palace':
-      priceNight.min = 10000;
-      break;
-  }
-};
 
 typeHousing.addEventListener('change', function () {
-  changePrice(typeHousing.value);
+  window.synchronizeFields(typeHousing, priceNight, typeHousingValue, priceNightValue, 'min');
 });
 
-// change rooms
-
-var changeCapacity = function (roomNumberValue) {
-  var number = +roomNumberValue;
-  var valueCapacity = number === 2 || number === 100 ? 3 : 0;
-
-  capacity.querySelector('[value="' + valueCapacity + '"]').selected = true;
-};
-
-var changeRoom = function (capacityValue) {
-  var valueRoom = +capacityValue === 0 ? 1 : 2;
-
-  roomNumber.querySelector('[value="' + valueRoom + '"]').selected = true;
-};
-
 roomNumber.addEventListener('change', function () {
-  changeCapacity(roomNumber.value);
+  window.synchronizeFields(roomNumber, capacity, roomNumberValue, capacityValue, 'value');
 });
 
 capacity.addEventListener('change', function () {
-  changeRoom(capacity.value);
+  window.synchronizeFields(capacity, roomNumber, capacityValue, roomNumberValue, 'value');
 });
