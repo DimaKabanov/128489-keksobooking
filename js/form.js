@@ -19,7 +19,7 @@ var capacity = form.querySelector('#capacity');
 
 var checkInTime = [12, 13, 14];
 var checkOutTime = [12, 13, 14];
-var typeHousingValue = ['apartment', 'shack', 'palace'];
+var typeHousingValue = ['shack', 'apartment', 'palace'];
 var priceNightValue = [0, 1000, 10000];
 var roomNumberValue = [1, 2, 100];
 var capacityValue = [0, 3, 3];
@@ -27,7 +27,7 @@ var capacityValue = [0, 3, 3];
 tokyoMap.addEventListener('click', window.initializePins);
 
 tokyoMap.addEventListener('keydown', function (e) {
-  if (window.utils.isActiveEvent(e)) {
+  if (window.utils.pressingEnter(e)) {
     window.initializePins(e);
   }
 });
@@ -39,7 +39,7 @@ title.minLength = 30;
 title.maxLength = 100;
 
 price.required = true;
-price.min = 0;
+price.min = 1000;
 price.max = 1000000;
 
 address.required = true;

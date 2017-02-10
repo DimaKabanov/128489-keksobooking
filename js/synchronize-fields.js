@@ -1,7 +1,8 @@
 'use strict';
 
 window.synchronizeFields = function (domElementOne, domElementTwo, arrayValuesOne, arrayValuesTwo, property) {
-  var value = property === 'value' ? +domElementOne.value : domElementOne.value;
+  var resultNumber = +domElementOne.value;
+  var value = !isNaN(resultNumber) ? resultNumber : domElementOne.value;
 
   for (var i = 0; i < arrayValuesOne.length; i++) {
     if (value === arrayValuesOne[i]) {
