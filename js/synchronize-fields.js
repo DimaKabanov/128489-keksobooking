@@ -1,6 +1,6 @@
 'use strict';
 
-window.synchronizeFields = function (domElementOne, domElementTwo, arrayValuesOne, arrayValuesTwo, property) {
+window.synchronizeFields = (function (domElementOne, domElementTwo, arrayValuesOne, arrayValuesTwo, property) {
   var resultNumber = +domElementOne.value;
   var value = !isNaN(resultNumber) ? resultNumber : domElementOne.value;
 
@@ -9,4 +9,4 @@ window.synchronizeFields = function (domElementOne, domElementTwo, arrayValuesOn
       domElementTwo[property] = arrayValuesTwo[i];
     }
   }
-};
+})();
