@@ -28,7 +28,7 @@ tokyoMap.addEventListener('click', window.initializePins);
 
 tokyoMap.addEventListener('keydown', function (e) {
   if (window.utils.pressingEnter(e)) {
-    window.initializePins(e);
+    window.initializePins(e, window.utils.focusOnElement);
   }
 });
 

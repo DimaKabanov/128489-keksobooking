@@ -13,6 +13,9 @@ window.utils = (function () {
     },
     hasClass: function (element, className) {
       return element.classList.contains(className);
+    },
+    focusOnElement: function (element) {
+      element.focus();
     }
   };
 })();
