@@ -16,6 +16,12 @@ window.utils = (function () {
     },
     focusOnElement: function (element) {
       element.focus();
+    },
+    syncValues: function (element, value) {
+      element.value = value;
+    },
+    syncValueWithMin: function (element, value) {
+      element.min = value;
     }
   };
 })();
