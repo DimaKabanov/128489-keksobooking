@@ -13,6 +13,15 @@ window.utils = (function () {
     },
     hasClass: function (element, className) {
       return element.classList.contains(className);
+    },
+    focusOnElement: function (element) {
+      element.focus();
+    },
+    syncValues: function (element, value) {
+      element.value = value;
+    },
+    syncValueWithMin: function (element, value) {
+      element.min = value;
     }
   };
 })();

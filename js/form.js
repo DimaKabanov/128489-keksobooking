@@ -28,7 +28,7 @@ tokyoMap.addEventListener('click', window.initializePins);
 
 tokyoMap.addEventListener('keydown', function (e) {
   if (window.utils.pressingEnter(e)) {
-    window.initializePins(e);
+    window.initializePins(e, window.utils.focusOnElement);
   }
 });
 
@@ -47,21 +47,21 @@ address.required = true;
 // correction fields //
 
 time.addEventListener('change', function () {
-  window.synchronizeFields(time, timeout, checkInTime, checkOutTime, 'value');
+  window.synchronizeFields(time, timeout, checkInTime, checkOutTime, window.utils.syncValues);
 });
 
 timeout.addEventListener('change', function () {
-  window.synchronizeFields(timeout, time, checkOutTime, checkInTime, 'value');
+  window.synchronizeFields(timeout, time, checkOutTime, checkInTime, window.utils.syncValues);
 });
 
 typeHousing.addEventListener('change', function () {
-  window.synchronizeFields(typeHousing, priceNight, typeHousingValue, priceNightValue, 'min');
+  window.synchronizeFields(typeHousing, priceNight, typeHousingValue, priceNightValue, window.utils.syncValueWithMin);
 });
 
 roomNumber.addEventListener('change', function () {
-  window.synchronizeFields(roomNumber, capacity, roomNumberValue, capacityValue, 'value');
+  window.synchronizeFields(roomNumber, capacity, roomNumberValue, capacityValue, window.utils.syncValues);
 });
 
 capacity.addEventListener('change', function () {
-  window.synchronizeFields(capacity, roomNumber, capacityValue, roomNumberValue, 'value');
+  window.synchronizeFields(capacity, roomNumber, capacityValue, roomNumberValue, window.utils.syncValues);
 });
