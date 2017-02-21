@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>Keksobooking</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
 <header class="header">
@@ -223,11 +222,15 @@
     </nav>
   </div>
 </footer>
+
+<!-- pin-template -->
 <template id="pin-template">
   <div class="pin" tabindex="0" role="button" aria-pressed="false">
     <img src="" alt="" class="rounded" width="40" height="40">
   </div>
 </template>
+
+<!-- dialog-template -->
 <template id="dialog-template">
   <div class="dialog" role="dialog" aria-labelledby="apartment1DialogTitle" aria-describedby="apartment1DialogDesc" aria-hidden="true">
     <div class="dialog__title">
@@ -247,9 +250,10 @@
     </div>
   </div>
 </template>
+
 <script src="js/utils.js"></script>
-<script src="js/show-card.js"></script>
 <script src="js/load.js"></script>
+<script src="js/create-dialog.js"></script>
 <script src="js/initialize-pins.js"></script>
 <script src="js/synchronize-fields.js"></script>
 <script src="js/form.js"></script>

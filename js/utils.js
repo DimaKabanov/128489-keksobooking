@@ -22,6 +22,9 @@ window.utils = (function () {
     },
     syncValueWithMin: function (element, value) {
       element.min = value;
+    },
+    hasDataAttribute: function (element, attribute) {
+      return element.dataset[attribute];
     }
   };
 })();

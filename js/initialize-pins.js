@@ -9,7 +9,6 @@ window.initializePins = (function () {
 
   var tokyoPinMap = document.querySelector('.tokyo__pin-map');
   var dialogClose = null;
-  var pins = null;
   var onSetupClose = null;
   var similarApartments = [];
 
@@ -24,16 +23,15 @@ window.initializePins = (function () {
 
     for (var i = 0; i < 3; i++) {
       var newPin = clonePine.cloneNode(true);
+      newPin.setAttribute('data-pin-index', i);
+      newPin.querySelector('.' + ROUNDED).setAttribute('src', data[i].author.avatar);
       newPin.style.left = data[i].location.x + 'px';
       newPin.style.top = data[i].location.y + 'px';
       tokyoPinMap.appendChild(newPin);
     }
-    pins = document.querySelectorAll('.' + PIN + ':not(.pin__main)');
   };
 
-  (function () {
-    window.load(DATA_URL, getDataAds);
-  })();
+  window.load(DATA_URL, getDataAds);
 
   var findActivePin = function () {
     return document.querySelector('.' + ACTIVE_PIN);
@@ -43,6 +41,12 @@ window.initializePins = (function () {
     return document.querySelector('.' + DIALOG);
   };
 
+  var removedDialog = function () {
+    if (findDialog()) {
+      findDialog().remove();
+    }
+  };
+
   var activationCloseDialog = function (e) {
     if (window.utils.pressingEscape(e)) {
       closeDialog();
@@ -50,7 +54,7 @@ window.initializePins = (function () {
   };
 
   var openDialog = function (index) {
-    var newDialog = createDialog(similarApartments[index]);
+    var newDialog = window.createDialog(similarApartments[index]);
     document.querySelector('.tokyo').appendChild(newDialog);
     dialogClose = document.querySelector('.dialog__close');
     dialogClose.addEventListener('click', closeDialog);
@@ -58,11 +62,7 @@ window.initializePins = (function () {
   };
 
   var closeDialog = function () {
-
-    if (!findDialog()) {
-      return;
-    }
-    findDialog().remove();
+    removedDialog();
     dialogClose.removeEventListener('click', closeDialog);
     document.removeEventListener('keydown', activationCloseDialog);
 
@@ -78,64 +78,29 @@ window.initializePins = (function () {
     if (!activePin) {
       return;
     }
-    closeDialog();
+    removedDialog();
+    activePin.setAttribute('aria-pressed', 'false');
     activePin.classList.remove(ACTIVE_PIN);
-    activePin.firstElementChild.setAttribute('aria-pressed', 'false');
-  };
-
-  var createDialog = function (data) {
-    var dialogTemplate = document.querySelector('#dialog-template');
-    var cloneDialog = dialogTemplate.content.querySelector('.dialog');
-    var dialogElement = cloneDialog.cloneNode(true);
-
-    dialogElement.querySelector('.dialog__title > img').setAttribute('src', data.author.avatar);
-    dialogElement.querySelector('.lodge__title').textContent = data.offer.title;
-    dialogElement.querySelector('.lodge__address').textContent = data.offer.address;
-    dialogElement.querySelector('.lodge__price').textContent = data.offer.price;
-    dialogElement.querySelector('.lodge__type').textContent = data.offer.type;
-    dialogElement.querySelector('.lodge__rooms-and-guests').textContent = data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
-    dialogElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + data.offer.checkin + ',' + ' выезд до ' + data.offer.checkout;
-    dialogElement.querySelector('.lodge__description').textContent = data.offer.description;
-
-    for (var i = 0; i < data.offer.features.length; i++) {
-      var features = dialogElement.querySelector('.lodge__features');
-      var feature = document.createElement('span');
-      feature.classList.add('feature__image');
-      feature.classList.add('feature__image--' + data.offer.features[i]);
-      features.appendChild(feature);
-    }
-
-    for (var p = 0; p < data.offer.photos.length; p++) {
-      var photos = dialogElement.querySelector('.lodge__photos');
-      var photo = document.createElement('img');
-      photo.setAttribute('src', data.offer.photos[p]);
-      photo.setAttribute('width', '52');
-      photo.setAttribute('height', '42');
-      photo.setAttribute('alt', data.offer.type + ' photo');
-      photos.appendChild(photo);
-    }
-    return dialogElement;
   };
 
   return function (e, cb) {
     var target = e.target;
 
     if (window.utils.hasClass(target, ROUNDED) || window.utils.hasClass(target, PIN)) {
+      var index = null;
       removeActivePin();
       onSetupClose = cb;
 
       if (target.classList.contains(ROUNDED)) {
         target.parentNode.classList.add(ACTIVE_PIN);
-        target.setAttribute('aria-pressed', 'true');
+        target.parentNode.setAttribute('aria-pressed', 'true');
+        index = window.utils.hasDataAttribute(target.parentNode, 'pinIndex');
       } else {
         target.classList.add(ACTIVE_PIN);
-        target.firstElementChild.setAttribute('aria-pressed', 'true');
+        target.setAttribute('aria-pressed', 'true');
+        index = window.utils.hasDataAttribute(target, 'pinIndex');
       }
-      for (var i = 0; i < pins.length; i++) {
-        if (target === pins[i] || target === pins[i].children[0]) {
-          openDialog(i);
-        }
-      }
+      openDialog(index);
     }
   };
 })();
