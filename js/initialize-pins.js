@@ -8,6 +8,7 @@ window.initializePins = (function () {
   var DATA_URL = 'https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data';
 
   var tokyoPinMap = document.querySelector('.tokyo__pin-map');
+  var mainPin = null;
   var dialogClose = null;
   var onSetupClose = null;
   var similarApartments = [];
@@ -42,7 +43,7 @@ window.initializePins = (function () {
   };
 
   var removedDialog = function () {
-    if (findDialog()) {
+    if (findDialog() && !mainPin) {
       findDialog().remove();
     }
   };
@@ -78,6 +79,7 @@ window.initializePins = (function () {
     if (!activePin) {
       return;
     }
+
     removedDialog();
     activePin.setAttribute('aria-pressed', 'false');
     activePin.classList.remove(ACTIVE_PIN);
@@ -88,19 +90,25 @@ window.initializePins = (function () {
 
     if (window.utils.hasClass(target, ROUNDED) || window.utils.hasClass(target, PIN)) {
       var index = null;
-      removeActivePin();
       onSetupClose = cb;
 
       if (target.classList.contains(ROUNDED)) {
+        mainPin = window.utils.hasClass(target.parentNode, 'pin__main');
+        removeActivePin();
         target.parentNode.classList.add(ACTIVE_PIN);
         target.parentNode.setAttribute('aria-pressed', 'true');
         index = window.utils.hasDataAttribute(target.parentNode, 'pinIndex');
       } else {
+        mainPin = window.utils.hasClass(target, 'pin__main');
+        removeActivePin();
         target.classList.add(ACTIVE_PIN);
         target.setAttribute('aria-pressed', 'true');
         index = window.utils.hasDataAttribute(target, 'pinIndex');
       }
-      openDialog(index);
+
+      if (index) {
+        openDialog(index);
+      }
     }
   };
 })();
