@@ -1,17 +1,51 @@
 'use strict';
 
 window.initializePins = (function () {
+  var DIALOG = 'dialog';
   var PIN = 'pin';
   var ACTIVE_PIN = 'pin--active';
-  var SHOW_DIALOG = 'dialog--show';
   var ROUNDED = 'rounded';
+  var DATA_URL = 'https://intensive-javascript-server-pedmyactpq.now.sh/keksobooking/data';
 
-  var dialog = document.querySelector('.dialog');
-  var dialogClose = dialog.querySelector('.dialog__close');
+  var tokyoPinMap = document.querySelector('.tokyo__pin-map');
+  var mainPin = null;
+  var dialogClose = null;
   var onSetupClose = null;
+  var similarApartments = [];
+
+  var getDataAds = function (e) {
+    similarApartments = JSON.parse(e.target.responseText);
+    createPin(similarApartments);
+  };
+
+  var createPin = function (data) {
+    var templatePin = document.querySelector('#pin-template');
+    var clonePine = templatePin.content.querySelector('.' + PIN);
+
+    for (var i = 0; i < 3; i++) {
+      var newPin = clonePine.cloneNode(true);
+      newPin.setAttribute('data-pin-index', i);
+      newPin.querySelector('.' + ROUNDED).setAttribute('src', data[i].author.avatar);
+      newPin.style.left = data[i].location.x + 'px';
+      newPin.style.top = data[i].location.y + 'px';
+      tokyoPinMap.appendChild(newPin);
+    }
+  };
+
+  window.load(DATA_URL, getDataAds);
 
   var findActivePin = function () {
     return document.querySelector('.' + ACTIVE_PIN);
+  };
+
+  var findDialog = function () {
+    return document.querySelector('.' + DIALOG);
+  };
+
+  var removedDialog = function () {
+    if (findDialog() && !mainPin) {
+      findDialog().remove();
+    }
   };
 
   var activationCloseDialog = function (e) {
@@ -20,15 +54,16 @@ window.initializePins = (function () {
     }
   };
 
-  var openDialog = function () {
-    window.showCard(dialog, SHOW_DIALOG);
+  var openDialog = function (index) {
+    var newDialog = window.createDialog(similarApartments[index]);
+    document.querySelector('.tokyo').appendChild(newDialog);
+    dialogClose = document.querySelector('.dialog__close');
     dialogClose.addEventListener('click', closeDialog);
     document.addEventListener('keydown', activationCloseDialog);
   };
 
   var closeDialog = function () {
-    dialog.classList.remove(SHOW_DIALOG);
-    dialog.setAttribute('aria-hidden', 'true');
+    removedDialog();
     dialogClose.removeEventListener('click', closeDialog);
     document.removeEventListener('keydown', activationCloseDialog);
 
@@ -44,26 +79,36 @@ window.initializePins = (function () {
     if (!activePin) {
       return;
     }
+
+    removedDialog();
+    activePin.setAttribute('aria-pressed', 'false');
     activePin.classList.remove(ACTIVE_PIN);
-    activePin.firstElementChild.setAttribute('aria-pressed', 'false');
   };
 
   return function (e, cb) {
     var target = e.target;
 
     if (window.utils.hasClass(target, ROUNDED) || window.utils.hasClass(target, PIN)) {
-      removeActivePin();
-
+      var index = null;
       onSetupClose = cb;
 
       if (target.classList.contains(ROUNDED)) {
+        mainPin = window.utils.hasClass(target.parentNode, 'pin__main');
+        removeActivePin();
         target.parentNode.classList.add(ACTIVE_PIN);
-        target.setAttribute('aria-pressed', 'true');
+        target.parentNode.setAttribute('aria-pressed', 'true');
+        index = window.utils.hasDataAttribute(target.parentNode, 'pinIndex');
       } else {
+        mainPin = window.utils.hasClass(target, 'pin__main');
+        removeActivePin();
         target.classList.add(ACTIVE_PIN);
-        target.firstElementChild.setAttribute('aria-pressed', 'true');
+        target.setAttribute('aria-pressed', 'true');
+        index = window.utils.hasDataAttribute(target, 'pinIndex');
       }
-      openDialog();
+
+      if (index) {
+        openDialog(index);
+      }
     }
   };
 })();
