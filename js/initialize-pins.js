@@ -16,13 +16,14 @@ window.initializePins = (function () {
   var getDataAds = function (e) {
     similarApartments = JSON.parse(e.target.responseText);
     createPin(similarApartments);
+    window.filterPins(similarApartments);
   };
 
   var createPin = function (data) {
     var templatePin = document.querySelector('#pin-template');
     var clonePine = templatePin.content.querySelector('.' + PIN);
 
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < data.length; i++) {
       var newPin = clonePine.cloneNode(true);
       newPin.setAttribute('data-pin-index', i);
       newPin.querySelector('.' + ROUNDED).setAttribute('src', data[i].author.avatar);

@@ -25,6 +25,28 @@ window.utils = (function () {
     },
     hasDataAttribute: function (element, attribute) {
       return element.dataset[attribute];
+    },
+    findElement: function (className) {
+      return document.querySelector('.' + className);
+    },
+    hideElementsArray: function (array, className) {
+      array.forEach(function (item) {
+        item.classList.add(className);
+      });
+    },
+    showElementsArray: function (array, className) {
+      array.forEach(function (item) {
+        item.classList.remove(className);
+      });
+    },
+    findElementInArrayByClass: function (array, className) {
+      var result = false;
+      array.forEach(function (item) {
+        if (item.classList.contains(className)) {
+          result = true;
+        }
+      });
+      return result;
     }
   };
 })();
