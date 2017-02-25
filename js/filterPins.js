@@ -78,17 +78,12 @@ window.filterPins = (function () {
     var filterFeatures = function (item) {
       var result = false;
       var arrayFeaturesItem = data[item.dataset.pinIndex].offer.features;
-      var arrayCheckedFeaturesItem = checkSelectedFeatures(); // Массив фичь отеченных в фильтре
 
-      var compareFeatures = function (elem) {
-        for (var i = 0; i < arrayFeaturesItem.length; i++) {
-          if (elem === arrayFeaturesItem[i]) {
-            result = true;
-          }
+      checkSelectedFeatures().forEach(function (elem) {
+        if (arrayFeaturesItem.indexOf(elem)) {
+          result = true;
         }
-      };
-
-      arrayCheckedFeaturesItem.forEach(compareFeatures);
+      });
 
       return result;
     };
