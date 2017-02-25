@@ -5,29 +5,17 @@ window.utils = (function () {
   var KEY_CODE_ESCAPE = 27;
 
   return {
-    pressingEnter: function (e) {
-      return e.keyCode && e.keyCode === KEY_CODE_ENTER;
+    pressingEnter: function (evt) {
+      return evt.keyCode && evt.keyCode === KEY_CODE_ENTER;
     },
-    pressingEscape: function (e) {
-      return e.keyCode && e.keyCode === KEY_CODE_ESCAPE;
-    },
-    hasClass: function (element, className) {
-      return element.classList.contains(className);
-    },
-    focusOnElement: function (element) {
-      element.focus();
+    pressingEscape: function (evt) {
+      return evt.keyCode && evt.keyCode === KEY_CODE_ESCAPE;
     },
     syncValues: function (element, value) {
       element.value = value;
     },
     syncValueWithMin: function (element, value) {
       element.min = value;
-    },
-    hasDataAttribute: function (element, attribute) {
-      return element.dataset[attribute];
-    },
-    findElement: function (className) {
-      return document.querySelector('.' + className);
     },
     hideElementsArray: function (array, className) {
       array.forEach(function (item) {

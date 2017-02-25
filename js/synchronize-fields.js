@@ -9,6 +9,7 @@ window.synchronizeFields = (function () {
     for (var i = 0; i < arrayValuesOne.length; i++) {
       if (value === arrayValuesOne[i]) {
         callback(domElementTwo, arrayValuesTwo[i]);
+        return;
       }
     }
   };

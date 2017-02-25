@@ -13,8 +13,8 @@ window.initializePins = (function () {
   var onSetupClose = null;
   var similarApartments = [];
 
-  var getDataAds = function (e) {
-    similarApartments = JSON.parse(e.target.responseText);
+  var getDataAds = function (evt) {
+    similarApartments = evt.target.response;
     createPin(similarApartments);
     window.filterPins(similarApartments);
   };
@@ -51,9 +51,9 @@ window.initializePins = (function () {
     }
   };
 
-  var activationCloseDialog = function (e) {
-    if (window.utils.pressingEscape(e)) {
-      closeDialog();
+  var onActivationDialogClose = function (evt) {
+    if (window.utils.pressingEscape(evt)) {
+      onDialogClose();
     }
   };
 
@@ -61,14 +61,14 @@ window.initializePins = (function () {
     var newDialog = window.createDialog(similarApartments[index]);
     document.querySelector('.tokyo').appendChild(newDialog);
     dialogClose = document.querySelector('.dialog__close');
-    dialogClose.addEventListener('click', closeDialog);
-    document.addEventListener('keydown', activationCloseDialog);
+    dialogClose.addEventListener('click', onDialogClose);
+    document.addEventListener('keydown', onActivationDialogClose);
   };
 
-  var closeDialog = function () {
+  var onDialogClose = function () {
     removedDialog();
-    dialogClose.removeEventListener('click', closeDialog);
-    document.removeEventListener('keydown', activationCloseDialog);
+    dialogClose.removeEventListener('click', onDialogClose);
+    document.removeEventListener('keydown', onActivationDialogClose);
 
     if (typeof onSetupClose === 'function') {
       onSetupClose(findActivePin());
@@ -82,21 +82,21 @@ window.initializePins = (function () {
     if (!activePin) {
       return;
     }
-
     removedDialog();
     activePin.setAttribute('aria-pressed', 'false');
     activePin.classList.remove(ACTIVE_PIN);
   };
 
-  return function (e, cb) {
-    var target = e.target;
+  return function (evt, cb) {
+    var target = evt.target;
+    var parentTarget = target.parentNode;
 
-    if (window.utils.hasClass(target, ROUNDED) || window.utils.hasClass(target, PIN)) {
+    if (target.classList.contains(ROUNDED) || target.classList.contains(PIN)) {
       onSetupClose = cb;
-      var targetElement = target.classList.contains(ROUNDED) ? target.parentNode : target;
-      var index = window.utils.hasDataAttribute(targetElement, 'pinIndex');
+      var targetElement = target.classList.contains(ROUNDED) ? parentTarget : target;
+      var index = targetElement.dataset['pinIndex'];
 
-      mainPin = window.utils.hasClass(targetElement, 'pin__main');
+      mainPin = targetElement.classList.contains('pin__main');
       removeActivePin();
       targetElement.classList.add(ACTIVE_PIN);
       targetElement.setAttribute('aria-pressed', 'true');

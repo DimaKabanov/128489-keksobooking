@@ -11,7 +11,7 @@ window.filterPins = (function () {
     var features = housingFeatures.querySelectorAll('input');
     var pins = document.querySelectorAll('.pin:not(.pin__main)');
 
-    var filteringArrayPins = function () {
+    var onArrayPinsChange = function () {
       var filteredPins = [];
       window.utils.hideElementsArray(pins, 'invisible');
 
@@ -37,12 +37,12 @@ window.filterPins = (function () {
         filteredPins = filteredPins.filter(filterFeatures);
       }
 
-      var activePin = window.utils.findElement('pin--active');
+      var activePin = document.querySelector('.pin--active');
       var activePinInArray = window.utils.findElementInArrayByClass(filteredPins, 'pin--active');
 
       if (activePin && !activePinInArray) {
         activePin.classList.remove('pin--active');
-        window.utils.findElement('dialog').remove();
+        document.querySelector('.dialog').remove();
       }
 
       window.utils.showElementsArray(filteredPins, 'invisible');
@@ -100,11 +100,26 @@ window.filterPins = (function () {
       return arrayFeatureValue;
     };
 
-    housingType.addEventListener('change', filteringArrayPins);
-    housingPrice.addEventListener('change', filteringArrayPins);
-    housingRoomNumber.addEventListener('change', filteringArrayPins);
-    housingGuestsNumber.addEventListener('change', filteringArrayPins);
-    housingFeatures.addEventListener('change', filteringArrayPins);
-    filteringArrayPins();
+    // Показать 3 случайных пина
+    var showRandomPins = function () {
+      window.utils.hideElementsArray(pins, 'invisible');
+      var count = 0;
+
+      while (count < 3) {
+        var randomIndex = (Math.floor(Math.random() * pins.length));
+        if (!document.querySelector('[data-pin-index="' + randomIndex + '"]').classList.contains('invisible')) {
+          continue;
+        }
+        pins[randomIndex].classList.remove('invisible');
+        count++;
+      }
+    };
+
+    housingType.addEventListener('change', onArrayPinsChange);
+    housingPrice.addEventListener('change', onArrayPinsChange);
+    housingRoomNumber.addEventListener('change', onArrayPinsChange);
+    housingGuestsNumber.addEventListener('change', onArrayPinsChange);
+    housingFeatures.addEventListener('change', onArrayPinsChange);
+    showRandomPins();
   };
 })();
