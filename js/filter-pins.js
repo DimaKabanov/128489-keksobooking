@@ -50,11 +50,12 @@ window.filterPins = (function () {
 
     // Фильтр для типа жилья, количества гостей и комнат
     var filterElement = function (item, control, path) {
+      var resultNumber = +control.value;
+      var value = !isNaN(resultNumber) ? resultNumber : control.value;
 
-      if (control.value === 'any') {
+      if (value === 'any') {
         return true;
       }
-      var value = typeof control.value === 'string' ? control.value : parseInt(control.value, 10);
       return data[item.dataset.pinIndex].offer[path] === value;
     };
 
