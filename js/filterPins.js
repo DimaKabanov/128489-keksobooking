@@ -80,7 +80,7 @@ window.filterPins = (function () {
       var arrayFeaturesItem = data[item.dataset.pinIndex].offer.features;
 
       checkSelectedFeatures().forEach(function (elem) {
-        if (arrayFeaturesItem.indexOf(elem)) {
+        if (arrayFeaturesItem.indexOf(elem) !== -1) {
           result = true;
         }
       });
