@@ -92,22 +92,14 @@ window.initializePins = (function () {
     var target = e.target;
 
     if (window.utils.hasClass(target, ROUNDED) || window.utils.hasClass(target, PIN)) {
-      var index = null;
       onSetupClose = cb;
+      var targetElement = target.classList.contains(ROUNDED) ? target.parentNode : target;
+      var index = window.utils.hasDataAttribute(targetElement, 'pinIndex');
 
-      if (target.classList.contains(ROUNDED)) {
-        mainPin = window.utils.hasClass(target.parentNode, 'pin__main');
-        removeActivePin();
-        target.parentNode.classList.add(ACTIVE_PIN);
-        target.parentNode.setAttribute('aria-pressed', 'true');
-        index = window.utils.hasDataAttribute(target.parentNode, 'pinIndex');
-      } else {
-        mainPin = window.utils.hasClass(target, 'pin__main');
-        removeActivePin();
-        target.classList.add(ACTIVE_PIN);
-        target.setAttribute('aria-pressed', 'true');
-        index = window.utils.hasDataAttribute(target, 'pinIndex');
-      }
+      mainPin = window.utils.hasClass(targetElement, 'pin__main');
+      removeActivePin();
+      targetElement.classList.add(ACTIVE_PIN);
+      targetElement.setAttribute('aria-pressed', 'true');
 
       if (index) {
         openDialog(index);
