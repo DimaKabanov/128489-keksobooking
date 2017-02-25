@@ -19,7 +19,7 @@ var capacity = form.querySelector('#capacity');
 
 var checkInTime = [12, 13, 14];
 var checkOutTime = [12, 13, 14];
-var typeHousingValue = ['shack', 'apartment', 'palace'];
+var typeHousingValue = ['bungalo', 'flat', 'house'];
 var priceNightValue = [0, 1000, 10000];
 var roomNumberValue = [1, 2, 100];
 var capacityValue = [0, 3, 3];

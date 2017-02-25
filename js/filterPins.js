@@ -19,10 +19,19 @@ window.filterPins = (function () {
         filteredPins.push(item);
       });
 
-      filteredPins = filteredPins.filter(filterTypeHousing);
+      filteredPins = filteredPins.filter(function (item) {
+        return filterElement(item, housingType, 'type');
+      });
+
       filteredPins = filteredPins.filter(filterPriceHousing);
-      filteredPins = filteredPins.filter(filterRoomNumber);
-      filteredPins = filteredPins.filter(filterGuestsNumber);
+
+      filteredPins = filteredPins.filter(function (item) {
+        return filterElement(item, housingRoomNumber, 'rooms');
+      });
+
+      filteredPins = filteredPins.filter(function (item) {
+        return filterElement(item, housingGuestsNumber, 'guests');
+      });
 
       if (checkSelectedFeatures().length !== 0) {
         filteredPins = filteredPins.filter(filterFeatures);
@@ -39,14 +48,15 @@ window.filterPins = (function () {
       window.utils.showElementsArray(filteredPins, 'invisible');
     };
 
-    // Фильтр типа жилья
-    var filterTypeHousing = function (item) {
-      var index = item.dataset.pinIndex;
-      var type = housingType.value;
-      if (type === 'any') {
+    // Фильтр для типа жилья, количества гостей и комнат
+    var filterElement = function (item, control, path) {
+      var resultNumber = +control.value;
+      var value = !isNaN(resultNumber) ? resultNumber : control.value;
+
+      if (value === 'any') {
         return true;
       }
-      return data[index].offer.type === type;
+      return data[item.dataset.pinIndex].offer[path] === value;
     };
 
     // Фильтр стоимости жилья
@@ -64,40 +74,22 @@ window.filterPins = (function () {
       }
     };
 
-    // Фильтр количества комнат
-    var filterRoomNumber = function (item) {
-      var index = item.dataset.pinIndex;
-      var numberOfRooms = housingRoomNumber.value;
-      if (numberOfRooms === 'any') {
-        return true;
-      }
-      return data[index].offer.rooms === +numberOfRooms;
-    };
-
-    // Фильтр количества гостей
-    var filterGuestsNumber = function (item) {
-      var index = item.dataset.pinIndex;
-      var numberOfGuests = housingGuestsNumber.value;
-      if (numberOfGuests === 'any') {
-        return true;
-      }
-      return data[index].offer.guests === +numberOfGuests;
-    };
-
     // Фильтр по отмеченным фичам
     var filterFeatures = function (item) {
       var result = false;
-      var index = item.dataset.pinIndex;
-      var arrayFeaturesItem = data[index].offer.features;
+      var arrayFeaturesItem = data[item.dataset.pinIndex].offer.features;
       var arrayCheckedFeaturesItem = checkSelectedFeatures(); // Массив фичь отеченных в фильтре
 
-      for (var i = 0; i < arrayCheckedFeaturesItem.length; i++) {
-        for (var p = 0; p < arrayFeaturesItem.length; p++) {
-          if (arrayCheckedFeaturesItem[i] === arrayFeaturesItem[p]) {
+      var compareFeatures = function (elem) {
+        for (var i = 0; i < arrayFeaturesItem.length; i++) {
+          if (elem === arrayFeaturesItem[i]) {
             result = true;
           }
         }
-      }
+      };
+
+      arrayCheckedFeaturesItem.forEach(compareFeatures);
+
       return result;
     };
 
@@ -117,7 +109,6 @@ window.filterPins = (function () {
     housingPrice.addEventListener('change', filteringArrayPins);
     housingRoomNumber.addEventListener('change', filteringArrayPins);
     housingGuestsNumber.addEventListener('change', filteringArrayPins);
-    housingFeatures.addEventListener('click', filteringArrayPins);
-
+    housingFeatures.addEventListener('change', filteringArrayPins);
   };
 })();
