@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Keksobooking</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
 <header class="header">
@@ -93,9 +94,9 @@
             <div class="form__element">
               <label for="type">Тип жилья</label>
               <select id="type">
-                <option value="apartment">Квартира</option>
-                <option value="shack">Лачуга</option>
-                <option value="palace">Дворец</option>
+                <option value="flat">Квартира</option>
+                <option value="bungalo">Лачуга</option>
+                <option value="house">Дворец</option>
               </select>
             </div>
             <div class="form__element">
@@ -252,6 +253,7 @@
 </template>
 
 <script src="js/utils.js"></script>
+<script src="js/filter-pins.js"></script>
 <script src="js/load.js"></script>
 <script src="js/create-dialog.js"></script>
 <script src="js/initialize-pins.js"></script>
