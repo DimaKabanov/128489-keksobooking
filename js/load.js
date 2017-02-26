@@ -5,6 +5,7 @@
     var xhr = new XMLHttpRequest();
     xhr.addEventListener('load', onLoad);
     xhr.open('GET', url);
+    xhr.responseType = 'json';
     xhr.send();
   };
 })();
