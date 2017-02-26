@@ -24,13 +24,15 @@
   var roomNumberValue = [1, 2, 100];
   var capacityValue = [0, 3, 3];
 
+  var onFocusElement = function (element) {
+    element.focus();
+  };
+
   tokyoMap.addEventListener('click', window.initializePins);
 
   tokyoMap.addEventListener('keydown', function (evt) {
-    if (window.utils.pressingEnter(evt)) {
-      window.initializePins(evt, function (element) {
-        element.focus();
-      });
+    if (window.utils.isPressEnter(evt)) {
+      window.initializePins(evt, onFocusElement);
     }
   });
 

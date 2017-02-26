@@ -5,10 +5,10 @@ window.utils = (function () {
   var KEY_CODE_ESCAPE = 27;
 
   return {
-    pressingEnter: function (evt) {
+    isPressEnter: function (evt) {
       return evt.keyCode && evt.keyCode === KEY_CODE_ENTER;
     },
-    pressingEscape: function (evt) {
+    isPressEscape: function (evt) {
       return evt.keyCode && evt.keyCode === KEY_CODE_ESCAPE;
     },
     syncValues: function (element, value) {
@@ -16,16 +16,6 @@ window.utils = (function () {
     },
     syncValueWithMin: function (element, value) {
       element.min = value;
-    },
-    hideElementsArray: function (array, className) {
-      array.forEach(function (item) {
-        item.classList.add(className);
-      });
-    },
-    showElementsArray: function (array, className) {
-      array.forEach(function (item) {
-        item.classList.remove(className);
-      });
     },
     findElementInArrayByClass: function (array, className) {
       var result = false;

@@ -51,8 +51,8 @@ window.initializePins = (function () {
     }
   };
 
-  var onActivationDialogClose = function (evt) {
-    if (window.utils.pressingEscape(evt)) {
+  var onDialogActivationClose = function (evt) {
+    if (window.utils.isPressEscape(evt)) {
       onDialogClose();
     }
   };
@@ -62,13 +62,13 @@ window.initializePins = (function () {
     document.querySelector('.tokyo').appendChild(newDialog);
     dialogClose = document.querySelector('.dialog__close');
     dialogClose.addEventListener('click', onDialogClose);
-    document.addEventListener('keydown', onActivationDialogClose);
+    document.addEventListener('keydown', onDialogActivationClose);
   };
 
   var onDialogClose = function () {
     removedDialog();
     dialogClose.removeEventListener('click', onDialogClose);
-    document.removeEventListener('keydown', onActivationDialogClose);
+    document.removeEventListener('keydown', onDialogActivationClose);
 
     if (typeof onSetupClose === 'function') {
       onSetupClose(findActivePin());

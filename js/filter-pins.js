@@ -2,18 +2,19 @@
 
 window.filterPins = (function () {
   return function (data) {
-    var filters = document.querySelector('.tokyo__filters');
+    var tokyo = document.querySelector('.tokyo');
+    var filters = tokyo.querySelector('.tokyo__filters');
     var housingType = filters.querySelector('#housing_type');
     var housingPrice = filters.querySelector('#housing_price');
     var housingRoomNumber = filters.querySelector('#housing_room-number');
     var housingGuestsNumber = filters.querySelector('#housing_guests-number');
     var housingFeatures = filters.querySelector('#housing_features');
     var features = housingFeatures.querySelectorAll('input');
-    var pins = document.querySelectorAll('.pin:not(.pin__main)');
+    var pins = tokyo.querySelectorAll('.pin:not(.pin__main)');
 
     var onArrayPinsChange = function () {
       var filteredPins = [];
-      window.utils.hideElementsArray(pins, 'invisible');
+      hidePins(pins);
 
       pins.forEach(function (item) {
         filteredPins.push(item);
@@ -37,20 +38,21 @@ window.filterPins = (function () {
         filteredPins = filteredPins.filter(filterFeatures);
       }
 
-      var activePin = document.querySelector('.pin--active');
+      var dialog = tokyo.querySelector('.dialog');
+      var activePin = tokyo.querySelector('.pin--active');
       var activePinInArray = window.utils.findElementInArrayByClass(filteredPins, 'pin--active');
 
       if (activePin && !activePinInArray) {
         activePin.classList.remove('pin--active');
-        document.querySelector('.dialog').remove();
+        dialog.remove();
       }
 
-      window.utils.showElementsArray(filteredPins, 'invisible');
+      showPins(filteredPins);
     };
 
     // Фильтр для типа жилья, количества гостей и комнат
     var filterElement = function (item, control, path) {
-      var resultNumber = +control.value;
+      var resultNumber = parseInt(control.value, 10);
       var value = !isNaN(resultNumber) ? resultNumber : control.value;
 
       if (value === 'any') {
@@ -100,9 +102,21 @@ window.filterPins = (function () {
       return arrayFeatureValue;
     };
 
+    var showPins = function (array) {
+      array.forEach(function (item) {
+        item.classList.remove('invisible');
+      });
+    };
+
+    var hidePins = function (array) {
+      array.forEach(function (item) {
+        item.classList.add('invisible');
+      });
+    };
+
     // Показать 3 пина
     var showInitialPins = function () {
-      window.utils.hideElementsArray(pins, 'invisible');
+      hidePins(pins);
 
       for (var i = 0; i < 3; i++) {
         pins[i].classList.remove('invisible');
