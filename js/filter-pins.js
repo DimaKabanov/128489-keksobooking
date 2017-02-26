@@ -100,18 +100,12 @@ window.filterPins = (function () {
       return arrayFeatureValue;
     };
 
-    // Показать 3 случайных пина
-    var showRandomPins = function () {
+    // Показать 3 пина
+    var showInitialPins = function () {
       window.utils.hideElementsArray(pins, 'invisible');
-      var count = 0;
 
-      while (count < 3) {
-        var randomIndex = (Math.floor(Math.random() * pins.length));
-        if (!document.querySelector('[data-pin-index="' + randomIndex + '"]').classList.contains('invisible')) {
-          continue;
-        }
-        pins[randomIndex].classList.remove('invisible');
-        count++;
+      for (var i = 0; i < 3; i++) {
+        pins[i].classList.remove('invisible');
       }
     };
 
@@ -120,6 +114,6 @@ window.filterPins = (function () {
     housingRoomNumber.addEventListener('change', onArrayPinsChange);
     housingGuestsNumber.addEventListener('change', onArrayPinsChange);
     housingFeatures.addEventListener('change', onArrayPinsChange);
-    showRandomPins();
+    showInitialPins();
   };
 })();
